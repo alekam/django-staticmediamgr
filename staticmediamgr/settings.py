@@ -53,6 +53,11 @@ DJANGO_ADMIN_DIR_NAME = getattr(settings, 'STATIC_MEDIA_DJANGO_ADMIN_DIR_NAME', 
 #: **Default:** ``()``
 EXCLUDE_APPS = getattr(settings, 'STATIC_MEDIA_EXCLUDE_APPS', tuple())
 
+#: List of apps witch media is used in admin area
+#: It's useful If you use application with custom admin media like grappelli
+#: Static content from this application copied only to admin media path
+DJANGO_ADMIN_APPS = getattr(settings, 'STATIC_MEDIA_DJANGO_ADMIN_APPS', ['django.contrib.admin',])
+
 #: A dictionary mapping of extension to compression command. Each command string
 #: can use ``%(outfile)s`` and ``%(infile)s`` placeholders.
 #:

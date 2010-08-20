@@ -205,7 +205,7 @@ def copy_app_media(destination=settings.APP_MEDIA_PATH):
         mod = importlib.import_module(app)
         mod_path = os.path.abspath(mod.__path__[0])
         app_media_path = os.path.join(mod_path, 'media')
-        if app == 'django.contrib.admin':
+        if app in settings.DJANGO_ADMIN_APPS:
             # Django's contrib.admin doesn't conform to the defacto standard
             # of storing your media in a directory with the app name. Therefore
             # it could easily collide a users media files.
