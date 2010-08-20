@@ -101,6 +101,9 @@ def copydir(src, dst, replace_files=True):
         srcname = os.path.join(src, name)
         dstname = os.path.join(dst, name)
         try:
+            # skip hidden files
+            if os.path.basename(srcname)[0] == '.':
+                continue
             if os.path.isdir(srcname):
                 if not os.path.exists(dstname):
                     os.makedirs(dstname)
