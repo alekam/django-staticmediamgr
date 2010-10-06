@@ -71,3 +71,16 @@ Remove any empty rules, such as ``p { }``.
 ===============================
 
 Convert multiple semicolons in a row with just one.
+
+
+``include_imports``
+===================
+
+Replaces @import directive in css files to content of the imported files.  
+
+
+``get_file_content_with_imports``
+=================================
+
+Returns content of css file with replaced @import.
+Returns empty string if file is not exists.

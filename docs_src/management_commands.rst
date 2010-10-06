@@ -22,6 +22,11 @@ Options
    Override the :ref:`STATIC_MEDIA_COMPRESS_CSS` setting and compress the css files while copying.
 
 
+.. cmdoption:: -i, --includecssimports
+
+   Override the :ref:`STATIC_MEDIA_INCLUDE_CSS_IMPORTS` setting and replace ``@import`` directive with files content in the css files while copying. Used with ``-c``, ``--compresscss`` option.
+
+
 .. cmdoption:: -j, --compressjs
 
    Override the :ref:`STATIC_MEDIA_COMPRESS_JS` setting and compress the javascript files while copying.

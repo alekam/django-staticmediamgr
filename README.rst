@@ -22,6 +22,8 @@ It consists of a management command, ``copy_static_media``, and several settings
 
 * ``STATIC_MEDIA_COMPRESS_CSS``  Should CSS files be compressed during copy using the included port of `YUI Compressor <http://developer.yahoo.com/yui/compressor/>`_ 
 
+* ``STATIC_MEDIA_INCLUDE_CSS_IMPORTS``  Should CSS files be included with @import css directive` 
+
 * ``STATIC_MEDIA_COMPRESS_JS``  Should javascript files be compressed during copy using the included python port of Douglas Crockford's `jsmin <http://www.crockford.com/javascript/jsmin.html>`_
 
 * ``STATIC_MEDIA_APP_MEDIA_PATH``  Where (and if) should the application media be copied to automatically.

@@ -22,6 +22,11 @@ PURGE_OLD_FILES = getattr(settings, 'STATIC_MEDIA_PURGE_OLD_FILES', True)
 #: **Default:** ``False``
 COMPRESS_CSS = getattr(settings, 'STATIC_MEDIA_COMPRESS_CSS', False)
 
+#: Should CSS files be included with @import css derective?
+#:
+#: **Default:** ``False``
+INCLUDE_CSS_IMPORTS = getattr(settings, 'STATIC_MEDIA_INCLUDE_CSS_IMPORTS', False)
+
 #: Should javscript files be compressed?
 #: 
 #: **Default:** ``False``

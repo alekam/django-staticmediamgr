@@ -9,6 +9,7 @@ Code licensed under the new BSD license
 This code is ported from YUI Compressor
 """
 import re
+import os
 
 def remove_comments(css):
     # compile the comment block using the flags multiline and dotall so that
@@ -110,6 +111,26 @@ def compress_css(css):
 def compress_cssfile(cssfilepath):
     csscontent = open(cssfilepath).read()
     return compress_css(csscontent)
+
+
+def include_imports(file_content, root_dir):
+    for import_file in re.findall("(?<=@import url\(\")([\w\.\-\/]+\.css)(?=\"\);)", file_content):
+        content = get_file_content_with_imports(os.path.join(root_dir, import_file))
+        pat = re.compile("(@import\s+url\(\"%s\"\);)" % re.escape(import_file), re.MULTILINE | re.UNICODE)
+        file_content = pat.sub("{{replace-this}}", file_content).replace("{{replace-this}}", remove_comments(content))
+    for import_file in re.findall("(?<=@import url\(\')([\w\.\-\/]+\.css)(?=\'\);)", file_content):
+        content = get_file_content_with_imports(os.path.join(root_dir, import_file))
+        pat = re.compile("(@import\s+url\(\'%s\'\);)" % re.escape(import_file), re.MULTILINE | re.UNICODE)
+        file_content = pat.sub("{{replace-this}}", file_content).replace("{{replace-this}}", remove_comments(content))
+    return file_content
+
+def get_file_content_with_imports(filename):
+    """Includes css file contents with @import directive"""
+    if not os.path.isfile(filename):
+        return ""
+    file_content = open(filename).read()
+    root_dir = os.path.dirname(filename)
+    return include_imports(compress_css(file_content), root_dir)
 
 
 if __name__ == "__main__":

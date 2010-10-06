@@ -15,6 +15,7 @@ class Command(BaseCommand):
     
     option_list = BaseCommand.option_list + (
         make_option("-c", "--compresscss", action="store_true", dest="compress", default=False, help='Compress css files, overriding "STATIC_MEDIA_COMPRESS_CSS".'),
+        make_option("-i", "--includecssimports", action="store_true", dest="include_imports", default=sm_settings.INCLUDE_CSS_IMPORTS, help='Includes css files from @import css derective, overriding "STATIC_MEDIA_INCLUDE_CSS_IMPORTS".'),
         make_option("-j", "--compressjs", action="store_true", dest="compress", default=False, help='Compress javascript files, overriding "STATIC_MEDIA_COMPRESS_JS".'),
         #make_option("-v", "--version", action="store_true", dest="version", default=False, help="Appends a SHA1 hash to the end of each file based on the file's contents"),
         make_option("-p", "--purge", action="store_true", dest="purge", default=sm_settings.PURGE_OLD_FILES, help='Override the "STATIC_MEDIA_PURGE_OLD_FILES" setting on handling the files in destination directories.'),
@@ -22,8 +23,10 @@ class Command(BaseCommand):
     
     def handle(self, *args, **kwargs):
         self.options = kwargs
-        for key, val in sm_settings.FILE_COMBINATIONS.items():
-            utils.combine_files(key, val)
+        
+        # build static
+        for dest, file in sm_settings.FILE_COMBINATIONS.items():
+            utils.combine_files(dest, file, self.options['include_imports'] or sm_settings.INCLUDE_CSS_IMPORTS)
         if self.options['purge'] or sm_settings.PURGE_OLD_FILES:
             for configitem in sm_settings.COPY_PATHS:
                 try:
@@ -32,8 +35,10 @@ class Command(BaseCommand):
                 except OSError:
                     pass # Probably trying to remove the same destination twice
         
+        # copy app media
         utils.copy_app_media()
         
+        # copy other files
         for configitem in sm_settings.COPY_PATHS:
             for item in glob.iglob(configitem['from']):
                 utils.copy(item, configitem['to'], purge=False)

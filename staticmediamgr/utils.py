@@ -217,7 +217,7 @@ def copy_app_media(destination=settings.APP_MEDIA_PATH):
             copy(app_media_path, destination, purge=False, replace_files=True)
 
 
-def combine_files(destination, path_list):
+def combine_files(destination, path_list, include_imports=False):
     """
     Combine the files in ``path_list`` to create one file at ``destination``.
     
@@ -231,7 +231,11 @@ def combine_files(destination, path_list):
     result_file = None
     try:
         for item in path_list:
-            source.write(open(item).read())
+            content = open(item).read()
+            if include_imports and item.endswith('.css'):
+                content = csscompressor.remove_comments(content)
+                content = csscompressor.include_imports(content, os.path.dirname(item)) 
+            source.write(content)
             source.write('\n')
         
         src_chksum = zlib.adler32(source.getvalue())
